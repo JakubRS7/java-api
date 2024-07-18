@@ -34,3 +34,29 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with: 
+              aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
+              aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+              aws-region: eu-west-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build & push the Docker image 
+        env: 
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }} 
+          ECR_REPOSITORY: employee_demo
+          IMAGE_TAG: team4-api
+
+          run: |
+          docker build --build-arg DB_HOST='academy2020.cpc8rvmbbd9k.eu-west-2.rds.amazonaws.com' --build-arg DB_PASSWORD='Gdansk2002Belfast' --build-arg DB_USERNAME='JakubR' --build-arg DB_NAME='employee_ShaunG' -t myapp:0.1 .
+          docker push ECR_REGISTRY/ECR_REPOSITORY:IMAGE_TAG
+
