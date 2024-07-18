@@ -56,7 +56,7 @@ jobs:
           ECR_REPOSITORY: employee_demo
           IMAGE_TAG: team4-api
 
-          run: |
-          docker build --build-arg DB_HOST='academy2020.cpc8rvmbbd9k.eu-west-2.rds.amazonaws.com' --build-arg DB_PASSWORD='Gdansk2002Belfast' --build-arg DB_USERNAME='JakubR' --build-arg DB_NAME='employee_ShaunG' -t myapp:0.1 .
-          docker push ECR_REGISTRY/ECR_REPOSITORY:IMAGE_TAG
+        run: |
+          docker build --build-arg DB_HOST=${DB_HOST} --build-arg DB_PASSWORD=${DB_PASSWORD} --build-arg DB_USERNAME=${DB_USERNAME} --build-arg DB_NAME=${DB_NAME} -t myapp:0.1 .
+          docker push ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
 
